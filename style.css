@@ -116,12 +116,6 @@ body {
   font-weight: bold;
 }
 
-
-.show {
-  display: block;
-}
-
-
 .clear-cart {
   width: 100%;
 }
@@ -131,6 +125,12 @@ body {
   font-weight: bold;
 }
 
+/*class to show product creation form and shopping cart*/
+.show {
+  display: block;
+}
+
+/*classes to deal with showing error messages for creating a new product*/
 .error {
   display: none;
   background-color: red;
@@ -141,10 +141,7 @@ body {
   display: block;
 }
 
-.item-form{
-  display: none;
-}
-
+/*classes to deal with showing the amount of the same item on shopping cart*/
 .amount {
   display: none;
 }

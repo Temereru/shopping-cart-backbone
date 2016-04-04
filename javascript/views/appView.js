@@ -2,11 +2,11 @@ var AppView = Backbone.View.extend({
   el: 'body',
 
   events: {
-    'click .submit-product': 'addProduct',
-    'click .add-to-cart': 'addToCart',
-    'click .clear-cart': 'clearCart',
-    'click .view-cart': 'cartShow',
-    'click .view-manager': 'managerShow'
+    'click .submit-product': 'addProduct', 
+    'click .add-to-cart': 'addToCart', 
+    'click .clear-cart': 'clearCart', 
+    'click .view-cart': 'cartShow', 
+    'click .view-manager': 'managerShow' 
   },
 
   initialize: function () {
@@ -19,6 +19,7 @@ var AppView = Backbone.View.extend({
     this.$cart = this.$('.cart-list');
   },
 
+  //used to create a new product model
   addProduct: function(e) {
     e.preventDefault();
     $('.showa').toggleClass('showa');
@@ -40,19 +41,18 @@ var AppView = Backbone.View.extend({
 
   },
 
+  //used to create a new product view for a product model that was added to the collection
   renderProduct: function (product) {
-    // create a new from the newly added post model
-    var view = new ProductView({ model: product, collection: this.model.get('products') });
-    
-    // render and append the new postView
+    var view = new ProductView({ model: product, collection: this.model.get('products') });    
+
     this.$products.append(view.render().el);
   },
 
+  //used to add an item to the shopping cart, or increase the amount of an item if it already exists in the shopping cart
   addToCart: function (e) {
     e.preventDefault();
     var instant = this.model.get('cart').where({name: $(e.target).parent().parent().data().name});
-    console.log(Array.isArray(instant));
-    if(instant.length === 0){
+    if(instant.length === 0){ //returns true if there is no model in the cart collection that corresponds to the given name
       var name = $(e.target).parent().parent().data().name;
       var price = $(e.target).parent().parent().data().price;
       var product = new CartItemModel({
@@ -65,7 +65,6 @@ var AppView = Backbone.View.extend({
       instant[0].attributes.amount++;
       var colArr = this.model.get('cart').models;
       var $liArr = $('.cart-list').children();
-      console.log($liArr);
       if(colArr.length !== $liArr.length){
         console.log('something is wrong');
       }else{
@@ -76,24 +75,14 @@ var AppView = Backbone.View.extend({
           }
         }
       }
-      var prices = this.model.get('cart').pluck('price');
-      var amounts = this.model.get('cart').pluck('amount');
-      var total = 0;
-      for(var i = 0; i < prices.length; i++){
-        total += prices[i] * amounts[i];
-      }
-      $('.total').html(total);
+
+      this.renderTotal();
     }
   },
 
+  //used to create a new item view for the new item model that was added to the cart collection
   renderCart: function (product) {
-    // if(isntant !== undefined){
-    //   var view = instant;
-    //   view.attributes.amount++
-    // }else{
-      var view = new CartItemView({ model: product, collection: this.model.get('cart') })
-    // }
-
+    var view = new CartItemView({ model: product, collection: this.model.get('cart') })
     this.$cart.append(view.render().el);
     var prices = this.model.get('cart').pluck('price');
     var amounts = this.model.get('cart').pluck('amount');
@@ -104,6 +93,7 @@ var AppView = Backbone.View.extend({
     $('.total').html(total);
   },
 
+  //used to update the total display for the cart
   renderTotal: function () {
     var prices = this.model.get('cart').pluck('price');
     var amounts = this.model.get('cart').pluck('amount');
@@ -114,32 +104,36 @@ var AppView = Backbone.View.extend({
     this.$cart.parent().parent().find('.total').html(total);
   },
 
+  //clears the cart collection and display
   clearCart: function () {
     this.model.get('cart').reset();
     this.$cart.empty();
     $('.total').html(0);
   },
 
+  //when a product is deleted from the app, removes all instances of it in the cart collection
   fixCart: function (product) {
     var arr = this.model.get('cart').where({name:product.attributes.name,price:parseInt(product.attributes.price)});
     this.model.get('cart').remove(arr);
   },
 
+  //displays the shopping cart on navbar button click
   cartShow: function(){
     $('.show').toggleClass('show');
     $('.shopping-cart').toggleClass('show');
   },
 
+  //displays the add product form on navbar button click
   managerShow: function(){
     $('.show').toggleClass('show');
     $('.create-item').toggleClass('show');
   },
 
+  //used to validate the add product form, currently only checks that the fields aren't empty
   _validate: function(product){
   var name = true;
   var price = true;
   var url = true;
-  console.log(product.name)
   if(product.attributes.name === ''){
     name = false;
   }

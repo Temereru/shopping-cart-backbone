@@ -10,18 +10,18 @@ var CartItemView = Backbone.View.extend ({
     this.listenTo(this.model, 'remove', this.removeItem);
   },
 
+  //remove item from the collection and display
   removeItem: function(){
     this.collection.remove(this.model);
     this.remove();
   },
 
+  //decrease the amount of an item both in the collection and display
   decreaseItem: function(){
     this.model.attributes.amount--;
-    console.log('removed');
     $('.amountShow').toggleClass('amountShow');
       var colArr = this.collection.models;
       var $liArr = $('.cart-list').children();
-      console.log($liArr);
       if(colArr.length !== $liArr.length){
         console.log('something is wrong');
       }else{
@@ -41,6 +41,7 @@ var CartItemView = Backbone.View.extend ({
       $('.total').html(total);
   },
 
+  //create the display of the item using the template
   render: function(){
     var template = Handlebars.compile(this.template.html());
 
