@@ -21,12 +21,16 @@ var AppView = Backbone.View.extend({
 
   addProduct: function(e) {
     e.preventDefault();
+    $('.showa').toggleClass('showa');
     var product = new ProductModel( { 
       name: $('#product-name').val(),
       price: $('#product-price').val(),
       url: $('#product-img').val()
     });
-    this.model.get('products').add(product);
+    if(this._validate(product)){
+      this.model.get('products').add(product);
+    }
+    
 
   },
 
@@ -123,5 +127,51 @@ var AppView = Backbone.View.extend({
   managerShow: function(){
     $('.show').toggleClass('show');
     $('.create-item').toggleClass('show');
+  },
+
+  _validate: function(product){
+  var name = true;
+  var price = true;
+  var url = true;
+  console.log(product.name)
+  if(product.attributes.name === ''){
+    name = false;
   }
+  if(product.attributes.price === ''){
+    price = false;
+  }
+  if(product.attributes.url === ''){
+    url = false;
+  }
+  if(!name && !price && !url){
+    $('#name-error').text('You have to enter a name, a price and a url for a photo');
+    $('#name-error').toggleClass('showa');
+    return false;
+  }else if(!name && !price){
+    $('#name-error').text('You have to enter a name and a price');
+    $('#name-error').toggleClass('showa');
+    return false;
+  }else if(!price && !url){
+    $('#name-error').text('You have to enter a price and a url for a photo');
+    $('#name-error').toggleClass('showa');
+    return false;
+  }else if(!name && !url){
+    $('#name-error').text('You have to enter a name and a url for a photo');
+    $('#name-error').toggleClass('showa');
+    return false;
+  }else if(!name){
+    $('#name-error').text('You have to enter a name');
+    $('#name-error').toggleClass('showa');
+    return false;
+  }else if(!price){
+    $('#name-error').text('You have to enter a price');
+    $('#name-error').toggleClass('showa');
+    return false;
+  }else if(!url){
+    $('#name-error').text('You have to enter a url for a photo');
+    $('#name-error').toggleClass('showa');
+    return false;
+  }
+  return true;
+}
 });
