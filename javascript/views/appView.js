@@ -27,8 +27,14 @@ var AppView = Backbone.View.extend({
       price: $('#product-price').val(),
       url: $('#product-img').val()
     });
-    if(this._validate(product)){
-      this.model.get('products').add(product);
+    var instant = this.model.get('products').where({name: product.attributes.name});
+    if(instant.length === 0){
+      if(this._validate(product)){
+        this.model.get('products').add(product);
+      }
+    }else {
+      $('#name-error').text('This product already exists');
+      $('#name-error').toggleClass('showa');
     }
     
 
