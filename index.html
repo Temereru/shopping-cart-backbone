@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="node_modules/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="node_modules/handlebars/dist/handlebars.min.js"></script>
+  <script type="text/javascript" src="node_modules/backbone/node_modules/underscore/underscore-min.js"></script>
+  <script type="text/javascript" src="node_modules/backbone/backbone-min.js"></script>
+  <title>Shopping Cart!</title>
+</head>
+<body>
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">SHOPPING CART</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" class="view-manager" data-toggle="dropdown" role="button">Manage<i class="fa fa-cog"></i></a>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="view-cart" data-toggle="dropdown" role="button">Shopping Cart <i class="fa fa-shopping-cart"></i></a>
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+
+  <div class="page-header">
+    <h1>SHOPPING CART</h1>
+  </div>
+<!-- shopping cart container, hidden at first -->
+  <div class="container">
+    <div class="shopping-cart">
+      <p class="cart-title">Items in Cart</p>
+      <div class="cart-list"></div>
+      <p>Total: $<span class="total">0</span></p>
+      <button class="btn clear-cart">Clear Cart</button>
+    </div>
+  </div>
+  <div class="container">
+    <div class="create-item">
+      <p class="create-title">Create Item</p>
+      <form class="form-horizontal">
+        <div class="form-group">
+          <input type="text" class="form-control" id="product-name" placeholder="Product name"></input>
+          <p class="error" id="name-error"></p>
+        </div>
+        <div class="form-group">
+          <input type="number" class="form-control" id="product-price" placeholder="Product price"></input>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" id="product-img" placeholder="Img Url"></input>
+        </div>
+      </form>
+      <button class="btn submit-product">Submit</button>
+    </div>
+  </div>
+
+<!-- div for item cards -->
+  <div class="row products"></div>
+
+<!-- template for cart item with amount of 1 -->
+  <script id="cart-item-1" type="text/x-handlebars-template">
+    <p>{{name}} - ${{price}}<i class="fa fa-times-circle item-remove"></i></p>
+  </script>
+  <!-- template for cart item with amount greater than 1 -->
+  <script id="cart-item-2" type="text/x-handlebars-template">
+    <p>{{name}}({{amount}}) - ${{price}}<i class="fa fa-times-circle item-remove"></i></p>
+  </script>
+  <!-- template for item card -->
+  <script id="item-card" type="text/x-handlebars-template">
+    <div class="col-md-4">
+      <div class="card-container">
+        <div class="card item" item data-name="{{ name }}" data-price="{{ price }}">
+          <div class="pricebox">
+            <p class="price"> ${{price}} </p>
+          </div>
+          <div class="deletebox">
+            <i class="fa fa-trash-o fa-4x"></i>
+          </div>
+          <div class="buybox">
+            <p class="add-to-cart"> ADD TO CART </p>
+          </div>
+          <div class="card-inner">
+            <img src="{{url}}" class="proimage">
+          </div>
+        </div><!-- card-item -->
+      </div><!-- card-container -->
+    </div><!-- col-md-4 -->
+  </div>
+  </script>
+
+  <script type="text/javascript" src="javascript/models/productModel.js"></script>
+  <script type="text/javascript" src="javascript/models/cartItemModel.js"></script>
+  <script type="text/javascript" src="javascript/collections/productCollection.js"></script>
+  <script type="text/javascript" src="javascript/collections/cartCollection.js"></script>
+  <script type="text/javascript" src="javascript/models/appModel.js"></script>
+  <script type="text/javascript" src="javascript/views/appView.js"></script>
+  <script type="text/javascript" src="javascript/views/ProductView.js"></script>
+  <script type="text/javascript" src="javascript/views/cartItemView.js"></script>
+  <script type="text/javascript" src="app.js"></script>
+  <script type="text/javascript" src="script.js"></script>
+</body>
+</html>
