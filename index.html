@@ -75,13 +75,9 @@
 <!-- div for item cards -->
   <div class="row products"></div>
 
-<!-- template for cart item with amount of 1 -->
-  <script id="cart-item-1" type="text/x-handlebars-template">
-    <p>{{name}} - ${{price}}<i class="fa fa-times-circle item-remove"></i></p>
-  </script>
   <!-- template for cart item with amount greater than 1 -->
-  <script id="cart-item-2" type="text/x-handlebars-template">
-    <p>{{name}}({{amount}}) - ${{price}}<i class="fa fa-times-circle item-remove"></i></p>
+  <script id="cart-item" type="text/x-handlebars-template">
+    <p>{{name}}<span class="amount amount-disp">({{amount}})</span> - ${{price}}<i class="fa fa-times-circle item-remove"></i><i class="fa fa-minus-circle item-decrease amount"></i></p>
   </script>
   <!-- template for item card -->
   <script id="item-card" type="text/x-handlebars-template">
@@ -115,6 +111,5 @@
   <script type="text/javascript" src="javascript/views/ProductView.js"></script>
   <script type="text/javascript" src="javascript/views/cartItemView.js"></script>
   <script type="text/javascript" src="app.js"></script>
-  <script type="text/javascript" src="script.js"></script>
 </body>
 </html>

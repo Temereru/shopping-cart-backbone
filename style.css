@@ -144,3 +144,11 @@ body {
 .item-form{
   display: none;
 }
+
+.amount {
+  display: none;
+}
+
+.amountShow {
+  display: inline;
+}
