@@ -14,6 +14,7 @@ var AppView = Backbone.View.extend({
     this.listenTo(this.model.get('products'), 'remove', this.fixCart);
     this.listenTo(this.model.get('cart'), 'add', this.renderCart);
     this.listenTo(this.model.get('cart'), 'remove', this.renderTotal);
+    this.listenTo(this.model.get('cart'), 'change', this.renderTotal);
 
     this.$products = this.$('.products');
     this.$cart = this.$('.cart-list');
@@ -51,32 +52,35 @@ var AppView = Backbone.View.extend({
   //used to add an item to the shopping cart, or increase the amount of an item if it already exists in the shopping cart
   addToCart: function (e) {
     e.preventDefault();
-    var instant = this.model.get('cart').where({name: $(e.target).parent().parent().data().name});
-    if(instant.length === 0){ //returns true if there is no model in the cart collection that corresponds to the given name
+    var instant = this.model.get('cart').where({identifier: $(e.target).parent().parent().data().cid});
+    if(instant.length === 0){ //returns true if there is no model in the cart collection that corresponds to the given cid
       var name = $(e.target).parent().parent().data().name;
       var price = $(e.target).parent().parent().data().price;
+      var identifier = $(e.target).parent().parent().data().cid;
       var product = new CartItemModel({
         name: name,
-        price: price
+        price: price,
+        identifier: identifier
       });
       this.model.get('cart').add(product);
     }else{
       $('.amountShow').toggleClass('amountShow');
-      instant[0].attributes.amount++;
+      var amount = instant[0].get('amount');
+      amount++;
+      instant[0].set('amount', amount);
       var colArr = this.model.get('cart').models;
       var $liArr = $('.cart-list').children();
       if(colArr.length !== $liArr.length){
         console.log('something is wrong');
       }else{
         for(var i = 0; i < $liArr.length; i++){
-          $($liArr[i]).find('.amount-disp').html('('+colArr[i].attributes.amount+')');
-          if(colArr[i].attributes.amount > 1){
+          $($liArr[i]).find('.amount-disp').html('('+colArr[i].get('amount')+')');
+          if(colArr[i].get('amount') > 1){
             $($liArr[i]).find('.amount').toggleClass('amountShow');
           }
         }
       }
 
-      this.renderTotal();
     }
   },
 
@@ -95,13 +99,8 @@ var AppView = Backbone.View.extend({
 
   //used to update the total display for the cart
   renderTotal: function () {
-    var prices = this.model.get('cart').pluck('price');
-    var amounts = this.model.get('cart').pluck('amount');
-    var total = 0;
-    for(var i = 0; i < prices.length; i++){
-      total += prices[i] * amounts[i];
-    }
-    this.$cart.parent().parent().find('.total').html(total);
+    this.model.calculateTotal();
+    this.$cart.parent().parent().find('.total').html(this.model.get('cartTotal'));
   },
 
   //clears the cart collection and display

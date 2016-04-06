@@ -15,7 +15,9 @@ var ProductView = Backbone.View.extend({
   render: function() {
     var template = Handlebars.compile(this.template.html());
 
-    this.$el.append(template(this.model.toJSON()));
+    var modelJ = this.model.toJSON();
+    modelJ.cid = this.model.collection.get(this.model).cid;
+    this.$el.append(template(modelJ));
     return this;
   }
 });
